@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Real-Time Data</title>
+</head>
+<body>
+<h1>Real-Time Data</h1>
+<p>Enter a number:</p>
+<input type="number" id="number">
+<p>The number is:</p>
+<p id="number-output"></p>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+var socket = io();
+
+socket.on('connect', function() {
+  console.log('Connected to server');
+});
+
+socket.on('message', function(data) {
+  console.log('Received message: ' + data);
+  document.getElementById('number-output').innerHTML = data;
+});
+
+document.getElementById('number').addEventListener('change', function() {
+  var number = document.getElementById('number').value;
+  socket.emit('message', number);
+});
+</script>
+</body>
+</html>
